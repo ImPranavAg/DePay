@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
+import { TransactionContext } from "../context/TransactionContext";
 
-// import { TransactionContext } from "../context/TransactionContext";
-
-// import useFetch from "../hooks/useFetch";
-// import dummyData from "../utils/dummyData";
-// import { shortenAddress } from "../utils/shortenAddress";
+import useFetch from "../hooks/useFetch";
+import dummyData from "../utils/dummyData";
+import { shortenAddress } from "../utils/shortenAddress";
 
 const TransactionsCard = ({
   addressTo,
@@ -30,7 +29,7 @@ const TransactionsCard = ({
       <div className="flex flex-col items-center w-full mt-3">
         <div className="display-flex justify-start w-full mb-6 p-2">
           <a
-            href={`https://ropsten.etherscan.io/address/${addressFrom}`}
+            href={`https://goerli.etherscan.io/address/${addressFrom}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -39,7 +38,7 @@ const TransactionsCard = ({
             </p>
           </a>
           <a
-            href={`https://ropsten.etherscan.io/address/${addressTo}`}
+            href={`https://goerli.etherscan.io/address/${addressTo}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -69,12 +68,12 @@ const TransactionsCard = ({
 };
 
 const Transactions = () => {
-  // const { transactions, currentAccount } = useContext(TransactionContext);
+  const { transactions, currentAccount } = useContext(TransactionContext);
 
   return (
     <div className="flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions">
       <div className="flex flex-col md:p-12 py-12 px-4">
-        {true ? (
+        {currentAccount ? (
           <h3 className="text-white text-3xl text-center my-2">
             Latest Transactions
           </h3>
@@ -85,7 +84,9 @@ const Transactions = () => {
         )}
 
         <div className="flex flex-wrap justify-center items-center mt-10">
-          
+          {[...dummyData, ...transactions].reverse().map((transaction, i) => (
+            <TransactionsCard key={i} {...transaction} />
+          ))}
         </div>
       </div>
     </div>
